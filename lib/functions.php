@@ -670,7 +670,7 @@ function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=tru
 			$value = isset($_POST[$attr]) ? (is_array($_POST[$attr]) ? $_POST[$attr] : (empty($_POST['nodecode'][$attr]) ? rawurldecode($_POST[$attr]) : $_POST[$attr])) : $default;
 			break;
 	}
-	
+
 	if ($die && is_null($value))
 		system_message(array(
 			'title'=>_('Generic Error'),
@@ -2157,18 +2157,18 @@ function password_types() {
 	return array(
 		''=>'clear',
 		'bcrypt'=>'bcrypt',
-                'blowfish'=>'blowfish',
-		'crypt'=>'crypt',
-		'ext_des'=>'ext_des',
-		'md5'=>'md5',
-		'k5key'=>'k5key',
-		'md5crypt'=>'md5crypt',
-		'sha'=>'sha',
-		'smd5'=>'smd5',
-		'ssha'=>'ssha',
-		'sha512'=>'sha512',
-		'sha256crypt'=>'sha256crypt',
-		'sha512crypt'=>'sha512crypt',
+		//'blowfish'=>'blowfish',
+		//'crypt'=>'crypt',
+		//'ext_des'=>'ext_des',
+		//'md5'=>'md5',
+		//'k5key'=>'k5key',
+		//'md5crypt'=>'md5crypt',
+		//'sha'=>'sha',
+		//'smd5'=>'smd5',
+		//'ssha'=>'ssha',
+		//'sha512'=>'sha512',
+		//'sha256crypt'=>'sha256crypt',
+		//'sha512crypt'=>'sha512crypt',
 	);
 }
 
@@ -2265,7 +2265,7 @@ function pla_password_hash($password_clear,$enc_type) {
                                    ];
                         #Checking if password_hash() function is available.
                         if (function_exists('password_hash'))
-                                $new_value = sprintf('{BCRYPT}%s',base64_encode(password_hash($password_clear, PASSWORD_BCRYPT, $options)));
+                                $new_value = sprintf('{BCRYPT}%s',password_hash($password_clear, PASSWORD_BCRYPT, $options));
                         else
                                 error(_('Your PHP install does not have the password_hash() function. Cannot do BCRYPT hashes.'),'error','index.php');
 
@@ -2378,18 +2378,12 @@ function password_check($cryptedpassword,$plainpassword,$attribute='userpassword
 			}
 
 			break;
-                 
+
                 #BCRYPT hashed passwords
                 case 'bcrypt':
                         # Check php password_verify support before using it
                         if (function_exists('password_verify')) {
-                                $hash = base64_decode($cryptedpassword);
-                                if (password_verify($plainpassword, $hash)) {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-
+                                return password_verify($plainpassword, $cryptedpassword);
                         } else {
                                 error(_('Your PHP install does not have the password_verify() function. Cannot do Bcrypt hashes.'),'error','index.php');
                         }
