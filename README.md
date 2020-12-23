@@ -42,7 +42,7 @@ services:
       - 8080:80
 
   ldap:
-    image: osixia/openldap
+    image: howardlau1999/openldap-bcrypt:latest
     restart: always
     environment:
       - 'LDAP_ORGANISATION=example.com'
