@@ -24,7 +24,7 @@ visible in git. Until then, a sneak peak of v2 is available [here](https://phpld
 ---
 This is a fork of mine, I added an alpine Docker image and removed insecure password hash algorithms.
 
-## Installation
+## Deployment
 
 ````yaml
 # docker-compose.yaml
